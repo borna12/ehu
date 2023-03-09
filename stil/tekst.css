@@ -130,7 +130,7 @@ tab{display: block; text-align: right;}
 ul{font-weight: bold;}
 ul a, ul.kazalo{font-weight: normal;}
 .swal2-title{font-size: 1.6em!important;line-height: 1;}
-
+.show-read-more{display: none;}
 .ikone{    background-repeat: no-repeat;
   background-position: left center;
   background-size: 40px;
@@ -195,6 +195,7 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: v
   -moz-columns: 4;
   columns: 4;margin-left: 2em;}
 
+  .modal-card-title {flex-shrink: initial;}
 
   @media screen and (max-width: 1023px){
 .navbar-menu {background-color: #761212;}}

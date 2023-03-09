@@ -63,15 +63,13 @@ function modal(e) {
   if (e.id == "impresum") { $(".modal-card-title").html("Impresum"); $(".modal-card-body").html('<p><strong>Tiskano izdanje</strong><br /><strong>Glavni urednici:</strong>&nbsp;Slavko Batušić, Andre Mohorovičić, Mirko Šeper<br />  <strong>Godina izdanja:</strong> 1959–1966.<br /><strong>Broj svezaka: </strong>4</p><p>&nbsp;</p><p><strong>Mrežno izdanje</strong><br /> <strong>Urednice:&nbsp;</strong>Irina Starčević Stančić, Cvijeta Kraus<br /> <strong>Izrada mrežne stranice:&nbsp;</strong>Josip Mihaljević<br /> <strong>Računalni unos podataka:</strong> Suzana Caganić, Gabrijela Romac</p><br><p>&copy;' + new Date().getFullYear() + ' &nbsp;Leksikografski zavod Miroslav Krleža. Sva prava pridržana.</p>'); $(".modal-card-foot a").html("") }
   else {
     adresa = window.location.href.split('#vrh')[0]
-    if (Number(e.getAttribute("data-vol")) == "4") { broj = Number(e.getAttribute("data-stranica")) + 9 }
-    else { broj = Number(e.getAttribute("data-stranica")) + 6 }
     vol = e.getAttribute("data-vol")
-    if (Number(e.getAttribute("data-vol")) == "3" && broj >= 103) { broj = broj + 14 }
     tekst = e.getAttribute("data-tekst")
-    if (tekst == "null") { tekst = "" }
 
+    if (tekst == "null") { tekst = "" }
+    broj = Number(e.getAttribute("data-stranica"))
     $(".modal-card-title").html(e.innerText)
-    $(".modal-card-body").html("<a href='./web/viewer.html?file=../stranice/lik" + vol + "/likovna-" + vol + ".pdf#page=" + broj + "' target='_blank'><figure><img src='thumbnail/lik" + vol + "/(" + e.getAttribute("data-stranica") + ").jpg' style='float: left; margin-right:10px; filter: drop-shadow(1px 1px 1px #000); max-height:200px'><figcaption>Vidi PDF...<figcaption></figure></a><p>Stranica: " + e.getAttribute("data-stranica") + "</p><p>Svezak: " + vol + "</p><p class='show-read-more'>" + tekst + "</p><p></p>")
+    $(".modal-card-body").html("<a href='./web/viewer.html?file=../stranice/vol" + vol + "/" + broj + ".pdf' target='_blank'><figure><img src='thumbnail/vol" + vol + "/" + e.getAttribute("data-stranica").split('-')[0].split(',')[0] + ".jpg' style='float: left; margin-right:10px; filter: drop-shadow(1px 1px 1px #000); max-height:200px'><figcaption>Vidi PDF...<figcaption></figure></a><p>Stranica: " + e.getAttribute("data-stranica") + "</p><p>Svezak: " + vol + "</p><p class='show-read-more'>" + tekst + "</p><p></p>")
 
 
     var yourElement = $(".modal-card-body");
@@ -785,7 +783,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
 
       for (var i = 0; i < results.length; i++) {
         var obj = results[i];
-        resultList.innerHTML += "<a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline trazen' data-target='modal-js-example'  data-prilog='" + obj.article.strprilog + "'data-stranica='" + obj.article.Stranica + "'  data-tekst='" + obj.article.Tekst + "'  data-vol='" + obj.article.Svezak + "' onclick='modal(this)'  target='_blank'><li class='ikone' style='background-image: url(\"thumbnail/lik" + obj.article.Svezak + "/\(" + obj.article.Stranica + ").jpg\")'>" + obj.article.Natuknica + "</li></a>"
+        resultList.innerHTML += "<a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline trazen' data-target='modal-js-example'  data-prilog='" + obj.article.strprilog + "'data-stranica='" + obj.article.Stranica + "'  data-tekst='" + obj.article.Tekst + "'  data-vol='" + obj.article.Svezak + "' onclick='modal(this)'  target='_blank'><li class='ikone' style='background-image: url(\"thumbnail/vol" + obj.article.Svezak + "/" + obj.article.Stranica.toString().split('-')[0].split(',')[0] + ".jpg'>" + obj.article.Natuknica + "</li></a>"
 
       }
       //results.article.title
