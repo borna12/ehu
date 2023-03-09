@@ -1,4 +1,4 @@
-let vol1 = "sortirano.csv";
+let vol1 = "podatci.csv";
 function copyClipboard(e) {
   if (document.body.createTextRange) (t = document.body.createTextRange()).moveToElementText(e), t.select(), document.execCommand("Copy"), t.removeAllRanges(); else if (window.getSelection) { var t, a = window.getSelection(); (t = document.createRange()).selectNodeContents(e), a.removeAllRanges(), a.addRange(t), document.execCommand("Copy"), a.removeAllRanges(), e.setAttribute("data-tooltip", "citat kopiran") }
   const myTimeout = setTimeout(myGreeting, 2000);
@@ -8,14 +8,14 @@ function copyClipboard(e) {
   }
 }
 function povezivanje(e) {
-  try{document.getElementsByTagName("input")[0].value = e.innerText.toUpperCase(); }
-  catch{ document.getElementsByTagName("input")[0].value = e}
-  
+  try { document.getElementsByTagName("input")[0].value = e.innerText.toUpperCase(); }
+  catch { document.getElementsByTagName("input")[0].value = e }
+
 
   /*close the list of autocompleted values,
   (or any other open lists of autocompleted values:*/
-  try{  localStorage.setItem("trazi", e.innerText.toUpperCase());}
-  catch{localStorage.setItem("trazi", e.replace("_"," "))}
+  try { localStorage.setItem("trazi", e.innerText.toUpperCase()); }
+  catch { localStorage.setItem("trazi", e.replace("_", " ")) }
   window.open(window.location.href, '_blank');
 }
 
@@ -60,7 +60,7 @@ function modal(e) {
       closeAllModals();
     }
   });
-  if (e.id == "impresum") { $(".modal-card-title").html("Impresum"); $(".modal-card-body").html('<p><strong>Tiskano izdanje</strong><br /><strong>Glavni urednici:</strong>&nbsp;Slavko Batušić, Andre Mohorovičić, Mirko Šeper<br />  <strong>Godina izdanja:</strong> 1959–1966.<br /><strong>Broj svezaka: </strong>4</p><p>&nbsp;</p><p><strong>Mrežno izdanje</strong><br /> <strong>Urednice:&nbsp;</strong>Irina Starčević Stančić, Cvijeta Kraus<br /> <strong>Izrada mrežne stranice:&nbsp;</strong>Josip Mihaljević<br /> <strong>Računalni unos podataka:</strong> Suzana Caganić, Gabrijela Romac</p><br><p>&copy;'+new Date().getFullYear() +' &nbsp;Leksikografski zavod Miroslav Krleža. Sva prava pridržana.</p>'); $(".modal-card-foot a").html("") }
+  if (e.id == "impresum") { $(".modal-card-title").html("Impresum"); $(".modal-card-body").html('<p><strong>Tiskano izdanje</strong><br /><strong>Glavni urednici:</strong>&nbsp;Slavko Batušić, Andre Mohorovičić, Mirko Šeper<br />  <strong>Godina izdanja:</strong> 1959–1966.<br /><strong>Broj svezaka: </strong>4</p><p>&nbsp;</p><p><strong>Mrežno izdanje</strong><br /> <strong>Urednice:&nbsp;</strong>Irina Starčević Stančić, Cvijeta Kraus<br /> <strong>Izrada mrežne stranice:&nbsp;</strong>Josip Mihaljević<br /> <strong>Računalni unos podataka:</strong> Suzana Caganić, Gabrijela Romac</p><br><p>&copy;' + new Date().getFullYear() + ' &nbsp;Leksikografski zavod Miroslav Krleža. Sva prava pridržana.</p>'); $(".modal-card-foot a").html("") }
   else {
     adresa = window.location.href.split('#vrh')[0]
     if (Number(e.getAttribute("data-vol")) == "4") { broj = Number(e.getAttribute("data-stranica")) + 9 }
@@ -75,30 +75,31 @@ function modal(e) {
 
 
     var yourElement = $(".modal-card-body");
-    poveznica = e.getAttribute("data-poveznica").split("; ")
+    //poveznica = e.getAttribute("data-poveznica").split("; ")
     prilog = e.getAttribute("data-prilog")
-    if (poveznica != "null") {
-      for (var i = 0; i < poveznica.length; i++) {
-        var find = poveznica[i];
-        var re = new RegExp(find, 'g');
-        yourElement.html(yourElement.html().replace(re, "<a onclick='povezivanje(this)'>" + poveznica[i] + "</a>"));
-      }
+    /* if (poveznica != "null") {
+    for (var i = 0; i < poveznica.length; i++) {
+      var find = poveznica[i];
+      var re = new RegExp(find, 'g');
+      yourElement.html(yourElement.html().replace(re, "<a onclick='povezivanje(this)'>" + poveznica[i] + "</a>"));
     }
+     }*/
     if (prilog != "null") {
-      if(prilog.split("; ").length==2){
-        prilozi=prilog.split("; ")
+      if (prilog.split("; ").length == 2) {
+        prilozi = prilog.split("; ")
         var re = new RegExp("VIDI PRILOG");
-        yourElement.html(yourElement.html().replace(re, "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/"+prilozi[0]+" target='_blank'><strong><em>VIDI PRILOG</em></strong></a>"));
-        zadnja=yourElement.html().lastIndexOf("VIDI PRILOG");
-        htmlTekst=yourElement.html()
-        htmlTekst=htmlTekst.substring(0, zadnja) + "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/"+prilozi[1]+" target='_blank'><strong><em>VIDI PRILOG</em></strong></a>" + htmlTekst.substr(zadnja + 11);
+        yourElement.html(yourElement.html().replace(re, "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilozi[0] + " target='_blank'><strong><em>VIDI PRILOG</em></strong></a>"));
+        zadnja = yourElement.html().lastIndexOf("VIDI PRILOG");
+        htmlTekst = yourElement.html()
+        htmlTekst = htmlTekst.substring(0, zadnja) + "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilozi[1] + " target='_blank'><strong><em>VIDI PRILOG</em></strong></a>" + htmlTekst.substr(zadnja + 11);
         yourElement.html(htmlTekst)
       }
-      else{
-      var re = new RegExp("VIDI PRILOG", 'g');
-      yourElement.html(yourElement.html().replace(re, "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/"+prilog+" target='_blank'><strong><em>VIDI PRILOG</em></strong></a>"));
-      var re = new RegExp("v. <em>Prilog", 'g');
-      yourElement.html(yourElement.html().replace(re, "v. <em><a href=./web/viewer.html?file=../prilozi/vol" + vol + "/"+prilog+" target='_blank'>Prilog</a></em>"));}
+      else {
+        var re = new RegExp("VIDI PRILOG", 'g');
+        yourElement.html(yourElement.html().replace(re, "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilog + " target='_blank'><strong><em>VIDI PRILOG</em></strong></a>"));
+        var re = new RegExp("v. <em>Prilog", 'g');
+        yourElement.html(yourElement.html().replace(re, "v. <em><a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilog + " target='_blank'>Prilog</a></em>"));
+      }
     }
 
     vrijeme = new Date()
@@ -106,7 +107,7 @@ function modal(e) {
     t_mjesec = vrijeme.getMonth() + 1
     t_dan = vrijeme.getDate()
 
-    $(".modal-card-foot a").html(e.innerText + ". <en style='font-style: italic;'>Enciklopedija likovnih umjetnosti</en>. Leksikografski zavod Miroslav Krleža, 1959–1966. Pristupljeno " + t_dan + ". " + t_mjesec + ". " + t_godina + ". 	&#60;"+window.location.href.split('#vrh')[0]+"&#62;.")
+    $(".modal-card-foot a").html(e.innerText + ". <en style='font-style: italic;'>Enciklopedija hrvatske umjetnosti</en>. Leksikografski zavod Miroslav Krleža, 1995–1996. Pristupljeno " + t_dan + ". " + t_mjesec + ". " + t_godina + ". 	&#60;" + window.location.href.split('#vrh')[0] + "&#62;.")
   }
 
 
@@ -171,39 +172,40 @@ const csvData = Papa.parse(vol1, {
   comments: "*=",
   complete: function (data) {
     results = data.data
-  }
+  },
+  transformHeader: function (h) { return h.replace(/\s/g, '').replace(".", '').replace("-", ''); }
 });
 var podatci
 var natuknice = []
 setTimeout(() => {
   podatci = results
-  for (var i = 0; i < podatci.length-1; i++) {
+  for (var i = 0; i < podatci.length - 1; i++) {
     natuknice.push(podatci[i].Natuknica)
   }
   document.getElementById("loader").style.display = "none";
   document.getElementById("myDiv").style.display = "block";
 
-  if ("trazi" in localStorage){
+  if ("trazi" in localStorage) {
     document.getElementsByTagName("input")[0].value = localStorage.getItem("trazi")
     /*close the list of autocompleted values,
     (or any other open lists of autocompleted values:*/
-    
-  
+
+
     document.getElementById('btnSearch').click();
     var rez = document.getElementsByClassName("trazen");
     for (var i = 0; i < rez.length; i++) {
       if (rez[i].innerText.toUpperCase() == localStorage.getItem("trazi").toUpperCase()) {
         rez[i].click()
       }
-    }localStorage.removeItem("trazi");
-    
+    } localStorage.removeItem("trazi");
+
   }
 
   /*var rez = document.getElementsByClassName("trazen");
   for (var i = 0; i < rez.length; i++) {
-    if (rez[i].innerText.toUpperCase() == e.innerText.toUpperCase()) {
-      rez[i].click()
-    }
+ if (rez[i].innerText.toUpperCase() == e.innerText.toUpperCase()) {
+rez[i].click()
+ }
   }*/
 }, 1500);
 
@@ -226,15 +228,14 @@ function autocomplete(inp, arr) {
     /*append the DIV element as a child of the autocomplete container:*/
     this.parentNode.appendChild(a);
     /*for each item in the array...*/
-    for (i = 0; i < arr.length; i++) 
-    {
+    for (i = 0; i < arr.length; i++) {
       /*check if the item starts with the same letters as the text field value:*/
       if (arr[i].substr(0, val.length).toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == val.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) {
         /*create a DIV element for each matching element:*/
         b = document.createElement("DIV");
         /*make the matching letters bold:*/
-        if (val.toUpperCase()[0]=="Ž" && arr[i].substr(0, val.length)=="Ž"){
-          
+        if (val.toUpperCase()[0] == "Ž" && arr[i].substr(0, val.length) == "Ž") {
+
         }
         b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
         b.innerHTML += arr[i].substr(val.length);
@@ -332,13 +333,13 @@ autocomplete(document.getElementById("input-search"), natuknice);
   abeceda = []
 
   /*  if (!abeceda.includes(obj.Natuknica[0].toLowerCase())){
-    //resultList.innerHTML +=<>
-    abeceda.push(obj.Natuknica[0].toLowerCase()) 
+ //resultList.innerHTML +=<>
+ abeceda.push(obj.Natuknica[0].toLowerCase()) 
   }*/
   /* for (var i = 0; i < podatci.length; i++) {
-         var obj = podatci[i];
-         resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a>"
-       }*/
+var obj = podatci[i];
+resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a>"
+ }*/
   adresa = window.location.href.split('#vrh')[0]
   $(".kazalo a").click(function () {
     $("#search-results").addClass("stupci")
@@ -354,349 +355,348 @@ autocomplete(document.getElementById("input-search"), natuknice);
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "a" || obj.Natuknica[0].toLowerCase() == "à" || obj.Natuknica[0].toLowerCase() == "á") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
-
       }
       else if (a == "B") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "b") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "C") { 
+      else if (a == "C") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase()=="c") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "c") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Č") { 
+      else if (a == "Č") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase()=="č") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "č") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Ć") { 
+      else if (a == "Ć") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "ć") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "D") { 
+      else if (a == "D") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "d") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Dž") { 
+      else if (a == "Dž") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica.slice(0, 2).toLowerCase()=="dž") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica.slice(0, 2).toLowerCase() == "dž") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Đ") { 
+      else if (a == "Đ") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "đ") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "E") { 
+      else if (a == "E") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "e" || obj.Natuknica[0].toLowerCase() == "é") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "F") { 
+      else if (a == "F") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "f" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "f") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "G") { 
+      else if (a == "G") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "g" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "g") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "H") { 
+      else if (a == "H") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "h" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "h") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "I") { 
+      else if (a == "I") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "i" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "i") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "J") { 
+      else if (a == "J") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "j" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "j") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "K") { 
+      else if (a == "K") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "k" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "k") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "L") { 
+      else if (a == "L") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "l" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "l") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Lj") { 
+      else if (a == "Lj") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica.slice(0, 2).toLowerCase()=="lj") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica.slice(0, 2).toLowerCase() == "lj") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "M") { 
+      else if (a == "M") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "m" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "m") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "N") { 
+      else if (a == "N") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "n" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "n") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "O") { 
+      else if (a == "O") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "o" || obj.Natuknica[0].toLowerCase() =="ō" || obj.Natuknica[0].toLowerCase() =="ö") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "o" || obj.Natuknica[0].toLowerCase() == "ō" || obj.Natuknica[0].toLowerCase() == "ö") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "P") { 
+      else if (a == "P") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "p" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "p") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Q") { 
+      else if (a == "Q") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "q" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "q") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "R") { 
+      else if (a == "R") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "r" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "r") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "S") { 
+      else if (a == "S") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "s" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "s") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Š") { 
+      else if (a == "Š") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "š" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "š") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "T") { 
+      else if (a == "T") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "t" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "t") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "U") { 
+      else if (a == "U") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "u" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "u") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "V") { 
+      else if (a == "V") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "v" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "v") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "W") { 
+      else if (a == "W") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "w" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "w") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Y") { 
+      else if (a == "Y") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "y" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "y") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Z") { 
+      else if (a == "Z") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "z" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "z") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
         }
       }
-      else if (a == "Ž") { 
+      else if (a == "Ž") {
         for (let i = lastDisplayedPost; i < podatci.length; i++) {
           sakri++
           var obj = podatci[i];
-          if (obj.Natuknica[0].toLowerCase() == "ž" ) {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-poveznica='" + obj.Poveznica + "' data-prilog='"+obj.Prilog+"' data-stranica='" + obj.Stranica + "' data-tekst='" + obj.Tekst + "'  data-vol='" + obj.Vez + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+          if (obj.Natuknica[0].toLowerCase() == "ž") {
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strprilog + "' data-stranica='" + obj.Stranica + "'data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -705,7 +705,7 @@ autocomplete(document.getElementById("input-search"), natuknice);
       z = a
       lastDisplayedPost = sakri;
 
-      if (lastDisplayedPost >= 300) {$("#read_more").show();}
+      if (lastDisplayedPost >= 300) { $("#read_more").show(); }
       if (sakri >= podatci.length) { $("#read_more").hide(); }
       $("#read_more").bind("click", function () {
         load(z)
@@ -758,9 +758,9 @@ autocomplete(document.getElementById("input-search"), natuknice);
       /* try {
        let occurences = article.Autor.match(reg);
        if (occurences) { priority += occurences.length; }
-     } catch (error) {console.error(error);}*/
+        } catch (error) {console.error(error);}*/
       // }
-    // If any matches, push to results
+      // If any matches, push to results
       if (priority > 0) {
         results.push({
           priority: priority,
@@ -785,7 +785,7 @@ autocomplete(document.getElementById("input-search"), natuknice);
 
       for (var i = 0; i < results.length; i++) {
         var obj = results[i];
-        resultList.innerHTML += "<a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline trazen' data-target='modal-js-example' data-poveznica='" + obj.article.Poveznica + "' data-prilog='" + obj.article.Prilog + "'data-stranica='" + obj.article.Stranica + "'  data-tekst='" + obj.article.Tekst + "'  data-vol='" + obj.article.Vez + "' onclick='modal(this)'  target='_blank'><li class='ikone' style='background-image: url(\"thumbnail/lik" + obj.article.Vez + "/\(" + obj.article.Stranica + ").jpg\")'>" + obj.article.Natuknica + "</li></a>"
+        resultList.innerHTML += "<a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline trazen' data-target='modal-js-example'  data-prilog='" + obj.article.strprilog + "'data-stranica='" + obj.article.Stranica + "'  data-tekst='" + obj.article.Tekst + "'  data-vol='" + obj.article.Svezak + "' onclick='modal(this)'  target='_blank'><li class='ikone' style='background-image: url(\"thumbnail/lik" + obj.article.Svezak + "/\(" + obj.article.Stranica + ").jpg\")'>" + obj.article.Natuknica + "</li></a>"
 
       }
       //results.article.title
