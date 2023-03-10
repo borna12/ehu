@@ -22,7 +22,9 @@ function povezivanje(e) {
 function modal(e) {
   // Functions to open and close a modal
   function openModal($el) {
-    $el.classList.add('is-active');
+    try{
+    $el.classList.add('is-active');}
+    catch{}
   }
 
   function closeModal($el) {
@@ -60,7 +62,7 @@ function modal(e) {
       closeAllModals();
     }
   });
-  if (e.id == "impresum") { $(".modal-card-title").html("Impresum"); $(".modal-card-body").html('<p><strong>Tiskano izdanje</strong><br /><strong>Glavni urednici:</strong>&nbsp;Slavko Batušić, Andre Mohorovičić, Mirko Šeper<br />  <strong>Godina izdanja:</strong> 1959–1966.<br /><strong>Broj svezaka: </strong>4</p><p>&nbsp;</p><p><strong>Mrežno izdanje</strong><br /> <strong>Urednice:&nbsp;</strong>Irina Starčević Stančić, Cvijeta Kraus<br /> <strong>Izrada mrežne stranice:&nbsp;</strong>Josip Mihaljević<br /> <strong>Računalni unos podataka:</strong> Suzana Caganić, Gabrijela Romac</p><br><p>&copy;' + new Date().getFullYear() + ' &nbsp;Leksikografski zavod Miroslav Krleža. Sva prava pridržana.</p>'); $(".modal-card-foot a").html("") }
+  if (e.id == "impresum") { $(".modal-card-title").html("Impresum mrežnog izdanja"); $(".modal-card-body").html('<p><strong>Urednice:&nbsp;</strong>Irina Starčević Stančić, Cvijeta Kraus<br /> <strong>Izrada mrežne stranice i programskih rješenja:&nbsp;</strong>Josip Mihaljević<br /> <strong>Računalni unos podataka:</strong> Cvijeta Kraus, Irina Starčević Stančić<br><strong>Digitalizacija knjige</strong>: Čiko koji pijeva svako jutro</p><br><p>&copy;' + new Date().getFullYear() + ' &nbsp;Leksikografski zavod Miroslav Krleža. Sva prava pridržana.</p>'); $(".modal-card-foot a").html("") }
   else {
     adresa = window.location.href.split('#vrh')[0]
     vol = e.getAttribute("data-vol")
@@ -748,7 +750,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
     let regMap = query.toLowerCase().split(' ').filter(function (word) {
       return word.length && !stopWords.includes(word);
     }).map(function (word) {
-      return new RegExp(word, 'i');
+      return new RegExp(word.replace("(","").replace(")",""), 'i');
     });
 
     //pokušaj
