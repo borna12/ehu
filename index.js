@@ -28,6 +28,9 @@ function modal(e) {
 
   function closeModal($el) {
     $el.classList.remove('is-active');
+    setTimeout(function(){
+      history.replaceState("", document.title, window.location.pathname);
+  }, 1);
   }
 
   function closeAllModals() {
@@ -63,6 +66,7 @@ function modal(e) {
   });
   if (e.id == "impresum") { $(".modal-card-title").html("Impresum mrežnog izdanja"); $(".modal-card-body").html('<p><strong>Urednice:&nbsp;</strong>Irina Starčević Stančić, Cvijeta Kraus<br /> <strong>Izrada mrežne stranice i programskih rješenja:&nbsp;</strong>Josip Mihaljević<br /> <strong>Računalni unos podataka:</strong> Cvijeta Kraus, Irina Starčević Stančić<br><strong>Digitalizacija knjige</strong>: Nenad Kunštek</p><br><p>&copy;' + new Date().getFullYear() + ' &nbsp;Leksikografski zavod Miroslav Krleža. Sva prava pridržana.</p>'); $(".modal-card-foot a").html("") }
   else {
+    window.location.hash = e.getAttribute("data-id");
     adresa = window.location.href.split('#vrh')[0]
     vol = e.getAttribute("data-vol")
     tekst = e.getAttribute("data-tekst")
@@ -81,7 +85,7 @@ function modal(e) {
     }
   
 
-    $(".modal-card-body").html("<a href='./web/viewer.html?file=../stranice/vol" + vol + "/" + pdf + ".pdf?' target='_blank'><figure><img src='thumbnail/vol" + vol + "/" + e.getAttribute("data-stranica").split(',')[0].split('-')[0] + ".jpg' style='float: left; margin-right:10px; filter: drop-shadow(1px 1px 1px #000); max-height:200px'><figcaption>Vidi PDF...<figcaption></figure></a><p>Stranica: " + e.getAttribute("data-stranica") + "</p><p>Svezak: " + vol + "</p><p class='show-read-more'>" + tekst + "</p><p class='prilog'><a href='./web/viewer.html?file=../stranice/vol" + vol + "/" + prilog + ".pdf' target='_blank'>Vidi prilog</a></p><p></p>")
+    $(".modal-card-body").html("<a href='./web/viewer.html?file=../stranice/vol" + vol + "/ehu" + vol+"-"+pdf + ".pdf' target='_blank'><figure><img src='thumbnail/vol" + vol + "/" + e.getAttribute("data-stranica").split(',')[0].split('-')[0] + ".jpg' style='float: left; margin-right:10px; filter: drop-shadow(1px 1px 1px #000); max-height:200px'><figcaption>Vidi PDF...<figcaption></figure></a><p>Stranica: " + e.getAttribute("data-stranica") + "</p><p>Svezak: " + vol + "</p><p class='show-read-more'>" + tekst + "</p><p class='prilog'><a href='./web/viewer.html?file=../stranice/vol" + vol + "/" + prilog + ".pdf' target='_blank'>Vidi prilog</a></p><p></p>")
 
 
     var yourElement = $(".modal-card-body");
@@ -122,7 +126,7 @@ function modal(e) {
     t_mjesec = vrijeme.getMonth() + 1
     t_dan = vrijeme.getDate()
 
-    $(".modal-card-foot a").html(e.innerText + ". <en style='font-style: italic;'>Enciklopedija hrvatske umjetnosti</en>. Leksikografski zavod Miroslav Krleža, 1995–1996. Pristupljeno " + t_dan + ". " + t_mjesec + ". " + t_godina + ". 	&#60;" + window.location.href.split('#vrh')[0] + "&#62;.")
+    $(".modal-card-foot a").html(e.innerText + ". <en style='font-style: italic;'>Enciklopedija hrvatske umjetnosti</en>. Leksikografski zavod Miroslav Krleža, 1995–1996. Pristupljeno " + t_dan + ". " + t_mjesec + ". " + t_godina + ". 	&#60;" + window.location.href.split('#')[0] + "&#62;.")
   }
 
 
@@ -144,6 +148,64 @@ function modal(e) {
   });
 }
 
+function modal2(e) {
+  // Functions to open and close a modal
+  $(".modal").addClass("is-active")
+  adresa = window.location.href.split('#vrh')[0]
+  vol = e.Svezak
+  tekst = e.Tekst
+
+  if (tekst == "null") { tekst = "" }
+  broj = Number(e.Stranica)
+  pdf=e.nazivpdfa
+  prilog=e.strpriloga
+  
+  $(".modal-card-title").html(e.Natuknica)
+  if (pdf == "null"){
+    pdf=broj
+  }
+  else{
+    pdf=String(pdf).split(".")[0]
+  }
+
+
+  $(".modal-card-title").html(e.Natuknica)
+  $(".modal-card-body").html("<a href='./web/viewer.html?file=../stranice/vol" + vol + "/ehu" + vol+"-"+pdf + ".pdf' target='_blank'><figure><img src='thumbnail/vol" + vol + "/" + String(e.Stranica).split(',')[0].split('-')[0] + ".jpg' style='float: left; margin-right:10px; filter: drop-shadow(1px 1px 1px #000); max-height:200px'><figcaption>Vidi PDF...<figcaption></figure></a><p>Stranica: " +String(e.Stranica) + "</p><p>Svezak: " + vol + "</p><p class='show-read-more'>" + tekst + "</p><p class='prilog'><a href='./web/viewer.html?file=../stranice/vol" + vol + "/" + prilog + ".pdf' target='_blank'>Vidi prilog</a></p><p></p>")
+  var yourElement = $(".modal-card-body");
+  /*poveznica = String(e.Poveznica).split("; ")
+  prilog = String(e.strpriloga)
+  if (poveznica != "null") {
+    for (var i = 0; i < poveznica.length; i++) {
+      var find = poveznica[i];
+      var re = new RegExp(find, 'g');
+      yourElement.html(yourElement.html().replace(re, "<a onclick='povezivanje(this)'>" + poveznica[i] + "</a>"));
+    }
+  }
+  if (prilog != "null") {
+    if (prilog.split("; ").length == 2) {
+      prilozi = prilog.split("; ")
+      var re = new RegExp("VIDI PRILOG");
+      yourElement.html(yourElement.html().replace(re, "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilozi[0] + " target='_blank'><strong><em>VIDI PRILOG</em></strong></a>"));
+      zadnja = yourElement.html().lastIndexOf("VIDI PRILOG");
+      htmlTekst = yourElement.html()
+      htmlTekst = htmlTekst.substring(0, zadnja) + "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilozi[1] + " target='_blank'><strong><em>VIDI PRILOG</em></strong></a>" + htmlTekst.substr(zadnja + 11);
+      yourElement.html(htmlTekst)
+    }
+    else {
+      var re = new RegExp("VIDI PRILOG", 'g');
+      yourElement.html(yourElement.html().replace(re, "<a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilog + " target='_blank'><strong><em>VIDI PRILOG</em></strong></a>"));
+      var re = new RegExp("v. <em>Prilog", 'g');
+      yourElement.html(yourElement.html().replace(re, "v. <em><a href=./web/viewer.html?file=../prilozi/vol" + vol + "/" + prilog + " target='_blank'>Prilog</a></em>"));
+    }
+  }
+*/
+  vrijeme = new Date()
+  t_godina = vrijeme.getFullYear()
+  t_mjesec = vrijeme.getMonth() + 1
+  t_dan = vrijeme.getDate()
+
+  $(".modal-card-foot a").html(e.Natuknica + ". <en style='font-style: italic;'>Enciklopedija likovnih umjetnosti</en>. Leksikografski zavod Miroslav Krleža, 1959–1966. Pristupljeno " + t_dan + ". " + t_mjesec + ". " + t_godina + ". 	&#60;" + window.location.href.split('#')[0] + "&#62;.")
+}
 
 $(document).ready(function () {
   $("#input-search").keyup(function (event) {
@@ -188,8 +250,17 @@ var podatci
 var natuknice = []
 setTimeout(() => {
   podatci = results
-  for (var i = 0; i < podatci.length - 1; i++) {
-    natuknice.push(podatci[i].Natuknica)
+  if (window.location.hash) {
+    for (var i = 0; i < podatci.length - 1; i++) {
+      natuknice.push(podatci[i].Natuknica)
+      if (String(window.location.hash.replace("#", "")) == String(podatci[i].ID)) {
+        modal2(podatci[i])
+      }
+    }
+  } else {
+    for (var i = 0; i < podatci.length - 1; i++) {
+      natuknice.push(podatci[i].Natuknica)
+    }
   }
   document.getElementById("loader").style.display = "none";
   document.getElementById("myDiv").style.display = "block";
@@ -364,7 +435,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "a" || obj.Natuknica[0].toLowerCase() == "à" || obj.Natuknica[0].toLowerCase() == "á") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -375,7 +446,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "b") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             //if (brojka == 300) { break }
           }
@@ -386,7 +457,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "c") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -397,7 +468,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "č") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -408,7 +479,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "ć") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -419,7 +490,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "d" && obj.Natuknica[1].toLowerCase() != "ž") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -430,7 +501,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica.slice(0, 2).toLowerCase() == "dž") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -441,7 +512,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "đ") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -452,7 +523,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "e" || obj.Natuknica[0].toLowerCase() == "é") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -463,7 +534,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "f") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -474,7 +545,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "g") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -485,7 +556,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "h") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -496,7 +567,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "i") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -507,7 +578,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "j") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -518,7 +589,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "k") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             //if (brojka == 300) { break }
           }
@@ -529,7 +600,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "l" && obj.Natuknica[1].toLowerCase() != "j") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -540,7 +611,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica.slice(0, 2).toLowerCase() == "lj") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -551,7 +622,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "m") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             //if (brojka == 300) { break }
           }
@@ -562,7 +633,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "n" && obj.Natuknica[1].toLowerCase() != "j") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -573,7 +644,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica.slice(0, 2).toLowerCase() ==  "nj") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -584,7 +655,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "o" || obj.Natuknica[0].toLowerCase() == "ō" || obj.Natuknica[0].toLowerCase() == "ö") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -595,7 +666,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "p") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             //if (brojka == 300) { break }
           }
@@ -606,7 +677,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "q") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -617,7 +688,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "r") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -628,7 +699,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "s") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             //if (brojka == 300) { break }
           }
@@ -639,7 +710,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "š") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -650,7 +721,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "t") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -661,7 +732,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "u") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -672,7 +743,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "v") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -694,7 +765,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "y") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -705,7 +776,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "z") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -716,7 +787,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
           sakri++
           var obj = podatci[i];
           if (obj.Natuknica[0].toLowerCase() == "ž") {
-            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
+            resultList.innerHTML += "<li ><a data-target='modal-js-example' data-prilog='" + obj.strpriloga + "' data-stranica='" + obj.Stranica + "'  data-id='"+obj.ID+"' data-pdf='"+obj.nazivpdfa+"' data-vol='" + obj.Svezak + "'  onclick='modal(this)'  class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline'  target='_blank'>" + obj.Natuknica + "</a></li>"
             brojka++
             if (brojka == 300) { break }
           }
@@ -805,7 +876,7 @@ resultList.innerHTML += "<br><a data-target='modal-js-example' class='has-toolti
 
       for (var i = 0; i < results.length; i++) {
         var obj = results[i];
-        resultList.innerHTML += "<a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline trazen' data-target='modal-js-example'  data-prilog='" + obj.article.strpriloga + "' data-stranica='" + obj.article.Stranica + "'  data-pdf='" + obj.article.nazivpdfa + "' data-tekst='" + obj.article.Tekst + "'  data-vol='" + obj.article.Svezak + "' onclick='modal(this)'  target='_blank'><li class='ikone' style='background-image: url(\"thumbnail/vol" + obj.article.Svezak + "/" + obj.article.Stranica.toString().split(',')[0].split('-')[0] + ".jpg'>" + obj.article.Natuknica + "</li></a>"
+        resultList.innerHTML += "<a data-target='modal-js-example' class='has-tooltip-arrow js-modal-trigger has-tooltip-multiline trazen' data-target='modal-js-example'  data-prilog='" + obj.article.strpriloga + "' data-stranica='" + obj.article.Stranica + "' data-id='"+obj.article.ID+"' data-pdf='" + obj.article.nazivpdfa + "' data-tekst='" + obj.article.Tekst + "'  data-vol='" + obj.article.Svezak + "' onclick='modal(this)'  target='_blank'><li class='ikone' style='background-image: url(\"thumbnail/vol" + obj.article.Svezak + "/" + obj.article.Stranica.toString().split(',')[0].split('-')[0] + ".jpg'>" + obj.article.Natuknica + "</li></a>"
 
       }
       //results.article.title
