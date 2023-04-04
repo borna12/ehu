@@ -10,7 +10,7 @@
   }
 }
 
-
+.prilog{display: none;}
 
 #loader {
   position: absolute;
@@ -140,7 +140,6 @@ ul a, ul.kazalo{font-weight: normal;}
 border-bottom: 1px solid black;
 }
 .trazen:last-child .ikone{border-bottom: 0;}
-.prilog{display: none;}
 .back-to-top-wrapper {
   position: absolute;
   top: 100vh;
